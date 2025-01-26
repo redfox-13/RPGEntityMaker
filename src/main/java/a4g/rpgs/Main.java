@@ -1,4 +1,4 @@
-package rpgs.a4g;
+package a4g.rpgs;
 
 public class Main {
 }
