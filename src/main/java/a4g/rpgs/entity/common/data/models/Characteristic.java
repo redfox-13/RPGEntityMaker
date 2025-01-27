@@ -1,5 +1,7 @@
 package a4g.rpgs.entity.common.data.models;
 
+import a4g.rpgs.constraints.Validate;
+
 import java.util.Objects;
 
 public class Characteristic {
@@ -11,14 +13,14 @@ public class Characteristic {
     public Characteristic() {}
 
     public Characteristic(String name, String description) {
-        this.name = name;
-        this.description = description;
+        this.name = Validate.isNotBlank(name, "Name");
+        this.description = Validate.isNotBlank(description, "Description");
     }
 
     public Characteristic(String name, String description, int armorClassBonus, Abilities abilitiesBonus) {
-        this.name = name;
-        this.description = description;
-        this.armorClassBonus = armorClassBonus;
+        this.name = Validate.isNotBlank(name, "Name");
+        this.description = Validate.isNotNull(description, "Description");
+        this.armorClassBonus = Validate.isPositiveOrZero(armorClassBonus, "Armor class bonus");
         this.abilitiesBonus = abilitiesBonus;
     }
 
@@ -26,21 +28,21 @@ public class Characteristic {
         return name;
     }
     public void setName(String name) {
-        this.name = name;
+        this.name = Validate.isNotBlank(name, "Name");
     }
 
     public String getDescription() {
         return description;
     }
     public void setDescription(String description) {
-        this.description = description;
+        this.description = Validate.isNotNull(description, "Description");
     }
 
     public int getArmorClassBonus() {
         return armorClassBonus;
     }
     public void setArmorClassBonus(int armorClassBonus) {
-        this.armorClassBonus = armorClassBonus;
+        this.armorClassBonus = Validate.isPositiveOrZero(armorClassBonus, "Armor class bonus");
     }
 
     public Abilities getAbilitiesBonus() {

@@ -1,5 +1,7 @@
 package a4g.rpgs.entity.common.data.models;
 
+import a4g.rpgs.constraints.Validate;
+
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -20,7 +22,7 @@ public class Abilities {
     }
 
     public void setValue(Type abilityType, byte value) {
-        values.replace(abilityType,value);
+        values.replace(abilityType, Validate.inRange(value, 0, 20, "Value"));
     }
 
     public enum Type {
