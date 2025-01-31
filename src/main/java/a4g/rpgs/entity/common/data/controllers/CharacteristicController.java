@@ -1,5 +1,6 @@
 package a4g.rpgs.entity.common.data.controllers;
 
+import a4g.rpgs.constraints.Validate;
 import a4g.rpgs.entity.common.data.models.Abilities;
 import a4g.rpgs.entity.common.data.models.Characteristic;
 
@@ -21,10 +22,13 @@ public class CharacteristicController {
     public Set<Characteristic> getCharacteristics() {
         return characteristics;
     }
+    public void setCharacteristics(Set<Characteristic> characteristics) {
+        this.characteristics = Validate.isNotNull(characteristics,"Characteristics");
+    }
 
-    public boolean addCharacteristic(Characteristic characteristic) {
-        boolean result = characteristics.add(characteristic);
-        if (result)
+    public boolean addCharacteristic(Characteristic characteristic) throws IllegalArgumentException {
+        boolean result = characteristics.add(Validate.isNotNull(characteristic, "Characteristic"));
+        if (!result)
             return false;
 
         totalArmorClassBonus += characteristic.getArmorClassBonus();
@@ -34,9 +38,9 @@ public class CharacteristicController {
 
         return true;
     }
-    public boolean removeCharacteristic(Characteristic characteristic) {
-        boolean result = characteristics.add(characteristic);
-        if (result)
+    public boolean removeCharacteristic(Characteristic characteristic) throws IllegalArgumentException {
+        boolean result = characteristics.remove(Validate.isNotNull(characteristic, "Characteristic"));
+        if (!result)
             return false;
 
         totalArmorClassBonus -= characteristic.getArmorClassBonus();

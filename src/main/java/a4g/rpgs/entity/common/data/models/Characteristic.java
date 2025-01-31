@@ -12,12 +12,12 @@ public class Characteristic {
 
     public Characteristic() {}
 
-    public Characteristic(String name, String description) {
+    public Characteristic(String name, String description) throws IllegalArgumentException {
         this.name = Validate.isNotBlank(name, "Name");
         this.description = Validate.isNotBlank(description, "Description");
     }
 
-    public Characteristic(String name, String description, int armorClassBonus, Abilities abilitiesBonus) {
+    public Characteristic(String name, String description, int armorClassBonus, Abilities abilitiesBonus) throws IllegalArgumentException {
         this.name = Validate.isNotBlank(name, "Name");
         this.description = Validate.isNotNull(description, "Description");
         this.armorClassBonus = Validate.isPositiveOrZero(armorClassBonus, "Armor class bonus");
@@ -27,21 +27,21 @@ public class Characteristic {
     public String getName() {
         return name;
     }
-    public void setName(String name) {
+    public void setName(String name) throws IllegalArgumentException {
         this.name = Validate.isNotBlank(name, "Name");
     }
 
     public String getDescription() {
         return description;
     }
-    public void setDescription(String description) {
+    public void setDescription(String description) throws IllegalArgumentException {
         this.description = Validate.isNotNull(description, "Description");
     }
 
     public int getArmorClassBonus() {
         return armorClassBonus;
     }
-    public void setArmorClassBonus(int armorClassBonus) {
+    public void setArmorClassBonus(int armorClassBonus) throws IllegalArgumentException {
         this.armorClassBonus = Validate.isPositiveOrZero(armorClassBonus, "Armor class bonus");
     }
 

@@ -21,7 +21,7 @@ public class Abilities {
         return values.get(ability);
     }
 
-    public void setValue(Type abilityType, byte value) {
+    public void setValue(Type abilityType, byte value) throws IllegalArgumentException {
         values.replace(abilityType, Validate.inRange(value, 0, 20, "Value"));
     }
 
