@@ -46,6 +46,6 @@ public class Skill {
     public enum Proficiency {
         NONE,
         PROFICIENT,
-        EXPERT
+        EXPERTISE
     }
 }
