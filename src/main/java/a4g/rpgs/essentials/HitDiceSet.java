@@ -25,6 +25,13 @@ public class HitDiceSet extends DiceSet {
         this.quantityLeft = hitDiceSet.getQuantityLeft();
     }
 
+    @Override
+    public void setQuantity(int quantity) throws IllegalArgumentException {
+        super.setQuantity(quantity);
+        if (quantityLeft > quantity)
+            quantityLeft = quantity;
+    }
+
     public int getQuantityLeft() {
         return quantityLeft;
     }

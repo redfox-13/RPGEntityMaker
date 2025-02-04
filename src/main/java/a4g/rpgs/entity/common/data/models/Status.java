@@ -20,7 +20,7 @@ public class Status {
     public Status(int armorClass, int hpMax, int hp, int hpTemp) throws IllegalArgumentException {
         this.armorClass = Validate.isPositiveOrZero(armorClass, "Armor class");
         this.hpMax = Validate.isPositive(hpMax, "Maximum health points");
-        this.hp = Validate.isPositiveOrZero(hpMax, "Health points");
+        this.hp = Validate.inRange(hp,0, hpMax, "Health points");
         this.hpTemp = Validate.isPositiveOrZero(hpTemp, "Temporary health points");
     }
 
@@ -28,7 +28,7 @@ public class Status {
         return hp;
     }
     public void setHp(int hp) throws IllegalArgumentException {
-        this.hp = Validate.isPositiveOrZero(hpMax, "Health points");
+        this.hp = Validate.inRange(hp,0, hpMax, "Health points");
     }
 
     public int getArmorClass() {
@@ -43,6 +43,8 @@ public class Status {
     }
     public void setHpMax(int hpMax) throws IllegalArgumentException {
         this.hpMax = Validate.isPositive(hpMax, "Maximum health points");
+        if (hp > hpMax)
+            hp = hpMax;
     }
 
     public int getHpTemp() {
