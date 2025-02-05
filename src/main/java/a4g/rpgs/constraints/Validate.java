@@ -1,6 +1,7 @@
 package a4g.rpgs.constraints;
 
 import java.util.List;
+import java.util.Set;
 
 public final class Validate {
     /* Object validation */
@@ -74,6 +75,13 @@ public final class Validate {
 
     /* Arrays/Lists */
     public static <T extends List> T isNotEmpty(T list, String argumentName) throws IllegalArgumentException {
+        if (list == null || list.isEmpty())
+            throw new IllegalArgumentException(argumentName + " must not be empty");
+
+        return list;
+    }
+
+    public static <T extends Set> T isNotEmpty(T list, String argumentName) throws IllegalArgumentException {
         if (list == null || list.isEmpty())
             throw new IllegalArgumentException(argumentName + " must not be empty");
 

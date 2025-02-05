@@ -10,8 +10,6 @@ public class Characteristic {
     private int armorClassBonus;
     private Abilities abilitiesBonus;
 
-    public Characteristic() {}
-
     public Characteristic(String name, String description) throws IllegalArgumentException {
         this.name = Validate.isNotBlank(name, "Name");
         this.description = Validate.isNotBlank(description, "Description");

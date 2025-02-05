@@ -1,12 +1,14 @@
 package a4g.rpgs.entity.type;
 
 import a4g.rpgs.constraints.Validate;
+import a4g.rpgs.entity.common.arcana.Energy;
+import a4g.rpgs.entity.common.arcana.EnergyController;
+import a4g.rpgs.entity.common.data.controllers.CharacteristicController;
+import a4g.rpgs.entity.common.data.models.Characteristic;
 import a4g.rpgs.entity.common.data.models.Skill;
 import a4g.rpgs.essentials.HitDiceSet;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Player {
     private Integer level;
@@ -15,6 +17,8 @@ public class Player {
     private HashMap<String, Skill> skills;
     private Byte deathSaves;
     private HitDiceSet hitDice;
+    private CharacteristicController characteristics;
+    private EnergyController energies;
 
     private static final byte SUCCESS_OFFSET = 1;
     private static final byte FAILURE_OFFSET = 4;
@@ -23,7 +27,7 @@ public class Player {
 
     public Player() {}
 
-    public Player(int level, int experience, boolean inspiration, List<Skill> skills, byte deathSaves, HitDiceSet hitDiceSet) throws IllegalArgumentException {
+    public Player(int level, int experience, boolean inspiration, List<Skill> skills, byte deathSaves, HitDiceSet hitDiceSet, Set<Characteristic> characteristics, Set<Energy> energies) throws IllegalArgumentException {
         this.level = Validate.isPositive(level, "Level");
         this.experience = Validate.isPositiveOrZero(experience,"Experience");
         this.inspiration = inspiration;
@@ -31,6 +35,8 @@ public class Player {
         Validate.isNotEmpty(skills, "Skill proficiencies").forEach(skill -> this.skills.put(skill.getName(),skill));
         this.deathSaves = deathSaves;
         this.hitDice = Validate.isNotNull(hitDiceSet, "Hit Dice set");
+        this.characteristics = new CharacteristicController(characteristics);
+        this.energies = new EnergyController(energies);
     }
 
     public Integer getLevel() {
@@ -181,5 +187,81 @@ public class Player {
             throw new IllegalStateException("The hit dice set has not been set yet");
 
         return hitDice.resetQuantityLeft();
+    }
+
+    public Set<Characteristic> getCharacteristics() {
+        return characteristics.getCharacteristics();
+    }
+    public void setCharacteristics(Set<Characteristic> characteristics) {
+        this.characteristics = new CharacteristicController(characteristics);
+    }
+    public void addCharacteristics(Set<Characteristic> characteristics) throws IllegalArgumentException {
+        if (this.characteristics == null){
+            this.characteristics = new CharacteristicController(characteristics);
+            return;
+        }
+
+        this.characteristics.addAllCharacteristics(characteristics);
+    }
+    public void removeCharacteristics(Set<Characteristic> characteristics) throws IllegalArgumentException {
+        if (this.characteristics == null)
+            return;
+
+        this.characteristics.removeAllCharacteristics(characteristics);
+    }
+
+    public boolean addCharacteristic(Characteristic characteristics) throws IllegalArgumentException {
+        if (this.characteristics == null)
+            this.characteristics = new CharacteristicController();
+
+        return this.characteristics.addCharacteristic(characteristics);
+    }
+    public boolean removeCharacteristic(Characteristic characteristics) throws IllegalArgumentException {
+        return this.characteristics.removeCharacteristic(characteristics);
+    }
+
+    public Map<String, Energy> getEnergies() {
+        if (energies == null)
+            return null;
+
+        return energies.getEnergies();
+    }
+    public void setEnergies(Set<Energy> energies) {
+        this.energies = new EnergyController(energies);
+    }
+    public void addEnergies(Set<Energy> energies) throws IllegalArgumentException {
+        if (this.energies == null) {
+            this.energies = new EnergyController(energies);
+            return;
+        }
+
+        this.energies.addAllEnergies(energies);
+    }
+    public void removeEnergies(Set<Energy> energies) throws IllegalArgumentException {
+        if (this.energies == null)
+            return;
+
+        this.energies.removeAllEnergies(energies);
+    }
+
+    public Energy getEnergy(String energyName) {
+        if (energies == null)
+            return null;
+
+        return energies.getEnergy(energyName);
+    }
+    public void addEnergy(Energy energy) throws IllegalArgumentException {
+        if (energies == null) {
+            energies = new EnergyController(Set.of(energy));
+            return;
+        }
+
+        energies.addEnergy(energy);
+    }
+    public void removeEnergy(Energy energy) throws IllegalArgumentException {
+        if (energies == null)
+            return;
+
+        energies.removeEnergy(energy);
     }
 }

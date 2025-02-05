@@ -3,27 +3,27 @@ package a4g.rpgs.entity.common.arcana;
 import a4g.rpgs.constraints.Validate;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class EnergyController {
     private final Map<String, Energy> energies = new HashMap<>();
 
-    public EnergyController(List<Energy> energies) throws IllegalArgumentException {
+    public EnergyController(Set<Energy> energies) throws IllegalArgumentException {
         Validate.isNotEmpty(energies, "Energies").forEach(energy -> this.energies.put(energy.getName(), energy));
     }
 
     public Map<String, Energy> getEnergies() {
         return new HashMap<>(energies);
     }
-    public void setEnergies(List<Energy> energies) throws IllegalArgumentException {
+    public void setEnergies(Set<Energy> energies) throws IllegalArgumentException {
         this.energies.clear();
         Validate.isNotEmpty(energies, "Energies").forEach(energy -> this.energies.put(energy.getName(), energy));
     }
-    public void addAllEnergies(List<Energy> energies) throws IllegalArgumentException {
+    public void addAllEnergies(Set<Energy> energies) throws IllegalArgumentException {
         Validate.isNotEmpty(energies, "Energies").forEach(energy -> this.energies.put(energy.getName(), energy));
     }
-    public void removeAllEnergies(List<Energy> energies) throws IllegalArgumentException {
+    public void removeAllEnergies(Set<Energy> energies) throws IllegalArgumentException {
         Validate.isNotEmpty(energies, "Energies").forEach(energy -> this.energies.remove(energy.getName()));
     }
 

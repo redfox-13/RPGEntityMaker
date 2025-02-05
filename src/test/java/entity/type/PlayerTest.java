@@ -1,7 +1,9 @@
 package entity.type;
 
 
+import a4g.rpgs.entity.common.arcana.Energy;
 import a4g.rpgs.entity.common.data.models.Abilities;
+import a4g.rpgs.entity.common.data.models.Characteristic;
 import a4g.rpgs.entity.common.data.models.Skill;
 import a4g.rpgs.entity.type.Player;
 import a4g.rpgs.essentials.DiceSet;
@@ -12,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class PlayerTest {
     Player testPlayer = null;
@@ -146,5 +149,79 @@ public class PlayerTest {
     void useHitDiceThrowsIfNoneLeft() {
         testPlayer.setHitDiceSet(new HitDiceSet(DiceSet.Dice.D8, 4));
         Assertions.assertThrows(IllegalStateException.class, () -> testPlayer.useHitDice(5));
+    }
+
+    @Test
+    void characteristicsCanBeSet() {
+        Set<Characteristic> characteristics = Set.of(new Characteristic("Test", "Its for testing"), new Characteristic("Test 2", "Its for testing 2"));
+        Assertions.assertDoesNotThrow(() -> testPlayer.setCharacteristics(characteristics));
+        Assertions.assertEquals(characteristics, testPlayer.getCharacteristics());
+    }
+
+    @Test
+    void addCharacteristicsWorks() {
+        Set<Characteristic> characteristics = Set.of(new Characteristic("Test", "Its for testing"), new Characteristic("Test 2", "Its for testing 2"));
+        Assertions.assertDoesNotThrow(() -> testPlayer.addCharacteristics(characteristics));
+        Assertions.assertTrue(testPlayer.getCharacteristics().containsAll(characteristics));
+    }
+
+    @Test
+    void removeCharacteristicsWorks() {
+        Set<Characteristic> characteristics = Set.of(new Characteristic("Test", "Its for testing"), new Characteristic("Test 2", "Its for testing 2"));
+        testPlayer.addCharacteristics(characteristics);
+        testPlayer.removeCharacteristics(characteristics);
+        Assertions.assertFalse(testPlayer.getCharacteristics().containsAll(characteristics));
+    }
+
+    @Test
+    void addSingleCharacteristicWorks() {
+        Characteristic characteristic = new Characteristic("Wise", "Plus damage for healing");
+        Assertions.assertDoesNotThrow(() -> testPlayer.addCharacteristic(characteristic));
+        Assertions.assertTrue(testPlayer.getCharacteristics().contains(characteristic));
+    }
+
+    @Test
+    void removeSingleCharacteristicWorks() {
+        Characteristic characteristic = new Characteristic("Intelligent", "Something smart");
+        testPlayer.addCharacteristic(characteristic);
+        testPlayer.removeCharacteristic(characteristic);
+        Assertions.assertFalse(testPlayer.getCharacteristics().contains(characteristic));
+    }
+
+    @Test
+    void energiesCanBeSet() {
+        Set<Energy> energies = Set.of(new Energy("Ki points", 8, Abilities.Type.DEXTERITY));
+        Assertions.assertDoesNotThrow(() -> testPlayer.setEnergies(energies));
+        Assertions.assertTrue(testPlayer.getEnergies().values().containsAll(energies));
+    }
+
+    @Test
+    void addEnergiesWorks() {
+        Set<Energy> energies = Set.of(new Energy("Ki points", 8, Abilities.Type.DEXTERITY));
+        Assertions.assertDoesNotThrow(() -> testPlayer.addEnergies(energies));
+        Assertions.assertTrue(testPlayer.getEnergies().values().containsAll(energies));
+    }
+
+    @Test
+    void removeEnergiesWorks() {
+        Set<Energy> energies = Set.of(new Energy("Ki points", 8, Abilities.Type.DEXTERITY));
+        testPlayer.addEnergies(energies);
+        testPlayer.removeEnergies(energies);
+        Assertions.assertFalse(testPlayer.getEnergies().values().containsAll(energies));
+    }
+
+    @Test
+    void addSingleEnergyWorks() {
+        Energy energy = new Energy("Ki points", 6, Abilities.Type.WISDOM);
+        Assertions.assertDoesNotThrow(() -> testPlayer.addEnergy(energy));
+        Assertions.assertTrue(testPlayer.getEnergies().containsValue(energy));
+    }
+
+    @Test
+    void removeSingleEnergyWorks() {
+        Energy energy = new Energy("Ki points", 6, Abilities.Type.WISDOM);
+        testPlayer.addEnergy(energy);
+        testPlayer.removeEnergy(energy);
+        Assertions.assertFalse(testPlayer.getEnergies().containsValue(energy));
     }
 }

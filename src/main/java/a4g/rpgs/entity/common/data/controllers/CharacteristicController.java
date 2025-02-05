@@ -11,19 +11,40 @@ import java.util.Set;
 public class CharacteristicController {
     Set<Characteristic> characteristics = new HashSet<>();
     private int totalArmorClassBonus;
-    private Abilities totalAbilitiesBonus;
+    private final Abilities totalAbilitiesBonus = new Abilities();
 
     public CharacteristicController() {}
 
     public CharacteristicController(Set<Characteristic> characteristics) {
-        this.characteristics.addAll(characteristics);
+        addAllCharacteristics(characteristics);
     }
 
     public Set<Characteristic> getCharacteristics() {
-        return characteristics;
+        return new HashSet<>(characteristics);
     }
-    public void setCharacteristics(Set<Characteristic> characteristics) {
-        this.characteristics = Validate.isNotNull(characteristics,"Characteristics");
+    public void addAllCharacteristics(Set<Characteristic> characteristics) throws IllegalArgumentException {
+        for (Characteristic characteristic : characteristics){
+            boolean result = this.characteristics.add(Validate.isNotNull(characteristic, "Characteristic"));
+            if (!result)
+                continue;
+
+            totalArmorClassBonus += characteristic.getArmorClassBonus();
+            if (characteristic.getAbilitiesBonus() != null)
+                characteristic.getAbilitiesBonus().getValues()
+                        .forEach((type, aByte) -> totalAbilitiesBonus.setValue(type, (byte) (totalAbilitiesBonus.getValue(type) + aByte)));
+        }
+    }
+    public void removeAllCharacteristics(Set<Characteristic> characteristics) throws IllegalArgumentException {
+        for (Characteristic characteristic : characteristics){
+            boolean result = this.characteristics.remove(Validate.isNotNull(characteristic, "Characteristic"));
+            if (!result)
+                continue;
+
+            totalArmorClassBonus -= characteristic.getArmorClassBonus();
+            if (characteristic.getAbilitiesBonus() != null)
+                characteristic.getAbilitiesBonus().getValues()
+                        .forEach((type, aByte) -> totalAbilitiesBonus.setValue(type, (byte) (totalAbilitiesBonus.getValue(type) - aByte)));
+        }
     }
 
     public boolean addCharacteristic(Characteristic characteristic) throws IllegalArgumentException {
