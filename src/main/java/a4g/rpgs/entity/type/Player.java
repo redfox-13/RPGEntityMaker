@@ -3,6 +3,7 @@ package a4g.rpgs.entity.type;
 import a4g.rpgs.constraints.Validate;
 import a4g.rpgs.entity.common.arcana.Energy;
 import a4g.rpgs.entity.common.arcana.EnergyController;
+import a4g.rpgs.entity.common.arcana.Technique;
 import a4g.rpgs.entity.common.data.controllers.CharacteristicController;
 import a4g.rpgs.entity.common.data.models.Characteristic;
 import a4g.rpgs.entity.common.data.models.Skill;
@@ -19,6 +20,7 @@ public class Player {
     private HitDiceSet hitDice;
     private CharacteristicController characteristics;
     private EnergyController energies;
+    private Set<Technique> techniques;
 
     private static final byte SUCCESS_OFFSET = 1;
     private static final byte FAILURE_OFFSET = 4;
@@ -27,7 +29,7 @@ public class Player {
 
     public Player() {}
 
-    public Player(int level, int experience, boolean inspiration, List<Skill> skills, byte deathSaves, HitDiceSet hitDiceSet, Set<Characteristic> characteristics, Set<Energy> energies) throws IllegalArgumentException {
+    public Player(int level, int experience, boolean inspiration, List<Skill> skills, byte deathSaves, HitDiceSet hitDiceSet, Set<Characteristic> characteristics, Set<Energy> energies, Set<Technique> techniques) throws IllegalArgumentException {
         this.level = Validate.isPositive(level, "Level");
         this.experience = Validate.isPositiveOrZero(experience,"Experience");
         this.inspiration = inspiration;
@@ -37,6 +39,7 @@ public class Player {
         this.hitDice = Validate.isNotNull(hitDiceSet, "Hit Dice set");
         this.characteristics = new CharacteristicController(characteristics);
         this.energies = new EnergyController(energies);
+        this.techniques = new HashSet<>(techniques);
     }
 
     public Integer getLevel() {
@@ -217,6 +220,9 @@ public class Player {
         return this.characteristics.addCharacteristic(characteristics);
     }
     public boolean removeCharacteristic(Characteristic characteristics) throws IllegalArgumentException {
+        if (this.characteristics == null)
+            return true;
+
         return this.characteristics.removeCharacteristic(characteristics);
     }
 
@@ -263,5 +269,52 @@ public class Player {
             return;
 
         energies.removeEnergy(energy);
+    }
+
+    public Set<Technique> getTechniques() {
+        if (techniques == null)
+            return null;
+
+        return new HashSet<>(techniques);
+    }
+    public void setTechniques(Set<Technique> techniques) throws IllegalArgumentException {
+        Validate.isNotEmpty(techniques, "Techniques");
+        if (this.techniques == null){
+            this.techniques = new HashSet<>(techniques);
+            return;
+        }
+
+        this.techniques.clear();
+        this.techniques.addAll(techniques);
+    }
+    public void addTechniques(Set<Technique> techniques) throws IllegalArgumentException {
+        Validate.isNotEmpty(techniques, "Techniques");
+        if (this.techniques == null){
+            this.techniques = new HashSet<>(techniques);
+            return;
+        }
+
+        this.techniques.addAll(techniques);
+    }
+    public void removeTechniques(Set<Technique> techniques) throws IllegalArgumentException {
+        if (this.techniques == null)
+            return;
+
+        this.techniques.removeAll(Validate.isNotEmpty(techniques, "Techniques"));
+    }
+
+    public void addTechnique(Technique technique) throws IllegalArgumentException {
+        Validate.isNotNull(technique, "Technique");
+        if (techniques == null)
+            techniques = new HashSet<>();
+
+        techniques.add(technique);
+    }
+    public void removeTechnique(Technique technique) throws IllegalArgumentException {
+        Validate.isNotNull(technique, "Technique");
+        if (techniques == null)
+            return;
+
+        techniques.remove(technique);
     }
 }

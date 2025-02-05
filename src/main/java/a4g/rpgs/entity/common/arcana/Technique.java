@@ -8,6 +8,12 @@ public class Technique {
     private int energyCost;
     private DiceSet diceSet;
 
+    public Technique(String name, DiceSet diceSet) {
+        this.name = Validate.isNotBlank(name, "Name");
+        this.diceSet = Validate.isNotNull(diceSet, "Dice set");
+        this.energyCost = 1;
+    }
+
     public Technique(String name, int energyCost, DiceSet diceSet) {
         this.name = Validate.isNotBlank(name, "Name");
         this.energyCost = Validate.isPositiveOrZero(energyCost, "Energy cost");

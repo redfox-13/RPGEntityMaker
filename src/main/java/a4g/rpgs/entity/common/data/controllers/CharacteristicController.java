@@ -23,7 +23,7 @@ public class CharacteristicController {
         return new HashSet<>(characteristics);
     }
     public void addAllCharacteristics(Set<Characteristic> characteristics) throws IllegalArgumentException {
-        for (Characteristic characteristic : characteristics){
+        for (Characteristic characteristic : Validate.isNotEmpty(characteristics, "Characteristics")){
             boolean result = this.characteristics.add(Validate.isNotNull(characteristic, "Characteristic"));
             if (!result)
                 continue;
@@ -35,7 +35,7 @@ public class CharacteristicController {
         }
     }
     public void removeAllCharacteristics(Set<Characteristic> characteristics) throws IllegalArgumentException {
-        for (Characteristic characteristic : characteristics){
+        for (Characteristic characteristic : Validate.isNotEmpty(characteristics, "Characteristics")){
             boolean result = this.characteristics.remove(Validate.isNotNull(characteristic, "Characteristic"));
             if (!result)
                 continue;

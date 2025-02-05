@@ -2,6 +2,7 @@ package entity.type;
 
 
 import a4g.rpgs.entity.common.arcana.Energy;
+import a4g.rpgs.entity.common.arcana.Technique;
 import a4g.rpgs.entity.common.data.models.Abilities;
 import a4g.rpgs.entity.common.data.models.Characteristic;
 import a4g.rpgs.entity.common.data.models.Skill;
@@ -159,10 +160,20 @@ public class PlayerTest {
     }
 
     @Test
+    void setCharacteristicsThrowsOnEmptySet() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testPlayer.setCharacteristics(Set.of()));
+    }
+
+    @Test
     void addCharacteristicsWorks() {
         Set<Characteristic> characteristics = Set.of(new Characteristic("Test", "Its for testing"), new Characteristic("Test 2", "Its for testing 2"));
         Assertions.assertDoesNotThrow(() -> testPlayer.addCharacteristics(characteristics));
         Assertions.assertTrue(testPlayer.getCharacteristics().containsAll(characteristics));
+    }
+
+    @Test
+    void addCharacteristicsThrowsOnEmptySet() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testPlayer.addCharacteristics(Set.of()));
     }
 
     @Test
@@ -174,10 +185,22 @@ public class PlayerTest {
     }
 
     @Test
+    void removeCharacteristicsThrowsOnEmptySet() {
+        Set<Characteristic> characteristics = Set.of(new Characteristic("Test", "Its for testing"), new Characteristic("Test 2", "Its for testing 2"));
+        testPlayer.addCharacteristics(characteristics);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testPlayer.removeCharacteristics(Set.of()));
+    }
+
+    @Test
     void addSingleCharacteristicWorks() {
         Characteristic characteristic = new Characteristic("Wise", "Plus damage for healing");
         Assertions.assertDoesNotThrow(() -> testPlayer.addCharacteristic(characteristic));
         Assertions.assertTrue(testPlayer.getCharacteristics().contains(characteristic));
+    }
+
+    @Test
+    void addSingleCharacteristicThrowsOnNull() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testPlayer.addCharacteristic(null));
     }
 
     @Test
@@ -189,6 +212,13 @@ public class PlayerTest {
     }
 
     @Test
+    void removeSingleCharacteristicThrowsOnNull() {
+        Characteristic characteristic = new Characteristic("Intelligent", "Something smart");
+        testPlayer.addCharacteristic(characteristic);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testPlayer.removeCharacteristic(null));
+    }
+
+    @Test
     void energiesCanBeSet() {
         Set<Energy> energies = Set.of(new Energy("Ki points", 8, Abilities.Type.DEXTERITY));
         Assertions.assertDoesNotThrow(() -> testPlayer.setEnergies(energies));
@@ -196,10 +226,20 @@ public class PlayerTest {
     }
 
     @Test
+    void setEnergiesThrowsOnEmptySet() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testPlayer.setEnergies(Set.of()));
+    }
+
+    @Test
     void addEnergiesWorks() {
         Set<Energy> energies = Set.of(new Energy("Ki points", 8, Abilities.Type.DEXTERITY));
         Assertions.assertDoesNotThrow(() -> testPlayer.addEnergies(energies));
         Assertions.assertTrue(testPlayer.getEnergies().values().containsAll(energies));
+    }
+
+    @Test
+    void addEnergiesThrowsOnEmptySet() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testPlayer.addEnergies(Set.of()));
     }
 
     @Test
@@ -211,10 +251,24 @@ public class PlayerTest {
     }
 
     @Test
+    void removeEnergiesThrowsOnEmptySet() {
+        Set<Energy> energies = Set.of(new Energy("Ki points", 8, Abilities.Type.DEXTERITY));
+        testPlayer.addEnergies(energies);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testPlayer.removeEnergies(Set.of()));
+    }
+
+    @Test
     void addSingleEnergyWorks() {
         Energy energy = new Energy("Ki points", 6, Abilities.Type.WISDOM);
         Assertions.assertDoesNotThrow(() -> testPlayer.addEnergy(energy));
         Assertions.assertTrue(testPlayer.getEnergies().containsValue(energy));
+    }
+
+    @Test
+    void addSingleEnergyThrowsOnNull() {
+        Energy energy = new Energy("Ki points", 6, Abilities.Type.WISDOM);
+        testPlayer.addEnergy(energy);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testPlayer.addEnergy(null));
     }
 
     @Test
@@ -223,5 +277,76 @@ public class PlayerTest {
         testPlayer.addEnergy(energy);
         testPlayer.removeEnergy(energy);
         Assertions.assertFalse(testPlayer.getEnergies().containsValue(energy));
+    }
+
+    @Test
+    void removeSingleEnergyThrowsOnNull() {
+        Energy energy = new Energy("Ki points", 6, Abilities.Type.WISDOM);
+        testPlayer.addEnergy(energy);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testPlayer.removeEnergy(null));
+    }
+
+    @Test
+    void techniquesCanBeSet() {
+        Set<Technique> techniques = Set.of(new Technique("Flurry of blows", new DiceSet(DiceSet.Dice.D8)));
+        Assertions.assertDoesNotThrow(() -> testPlayer.setTechniques(techniques));
+        Assertions.assertEquals(techniques, testPlayer.getTechniques());
+    }
+
+    @Test
+    void setTechniquesThrowsOnEmptySet() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testPlayer.setTechniques(Set.of()));
+    }
+
+    @Test
+    void addTechniquesWorks() {
+        Set<Technique> techniques = Set.of(new Technique("Flurry of blows", new DiceSet(DiceSet.Dice.D8)));
+        Assertions.assertDoesNotThrow(() -> testPlayer.addTechniques(techniques));
+        Assertions.assertTrue(testPlayer.getTechniques().containsAll(techniques));
+    }
+
+    @Test
+    void addTechniquesThrowsOnEmptySet() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testPlayer.addTechniques(Set.of()));
+    }
+
+    @Test
+    void removeTechniquesWorks() {
+        Set<Technique> techniques = Set.of(new Technique("Thunderclap", new DiceSet(DiceSet.Dice.D6)));
+        testPlayer.addTechniques(techniques);
+        testPlayer.removeTechniques(techniques);
+        Assertions.assertFalse(testPlayer.getTechniques().containsAll(techniques));
+    }
+
+    @Test
+    void removeTechniquesThrowsOnEmptySet() {
+        Set<Technique> techniques = Set.of(new Technique("Thunderclap", new DiceSet(DiceSet.Dice.D6)));
+        testPlayer.addTechniques(techniques);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testPlayer.removeTechniques(Set.of()));
+    }
+
+    @Test
+    void addSingleTechniqueWorks() {
+        Technique technique = new Technique("Fireball", new DiceSet(DiceSet.Dice.D8, 10));
+        Assertions.assertDoesNotThrow(() -> testPlayer.addTechnique(technique));
+        Assertions.assertTrue(testPlayer.getTechniques().contains(technique));
+    }
+
+    @Test
+    void addTechniqueThrowsOnNull() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testPlayer.addTechnique(null));
+    }
+
+    @Test
+    void removeSingleTechniqueWorks() {
+        Technique technique = new Technique("Jab", new DiceSet(DiceSet.Dice.D6));
+        testPlayer.addTechnique(technique);
+        testPlayer.removeTechnique(technique);
+        Assertions.assertFalse(testPlayer.getTechniques().contains(technique));
+    }
+
+    @Test
+    void removeTechniqueThrowsOnNull() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testPlayer.removeTechnique(null));
     }
 }
