@@ -1,4 +1,4 @@
-package entity.type;
+package a4g.rpgs.entity.type;
 
 
 import a4g.rpgs.entity.common.arcana.Energy;
@@ -6,7 +6,6 @@ import a4g.rpgs.entity.common.arcana.Technique;
 import a4g.rpgs.entity.common.data.models.Abilities;
 import a4g.rpgs.entity.common.data.models.Characteristic;
 import a4g.rpgs.entity.common.data.models.Skill;
-import a4g.rpgs.entity.type.Player;
 import a4g.rpgs.essentials.DiceSet;
 import a4g.rpgs.essentials.HitDiceSet;
 import org.junit.jupiter.api.Assertions;
