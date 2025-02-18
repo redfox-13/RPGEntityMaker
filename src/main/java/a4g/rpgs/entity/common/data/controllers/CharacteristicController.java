@@ -22,6 +22,10 @@ public class CharacteristicController {
     public Set<Characteristic> getCharacteristics() {
         return new HashSet<>(characteristics);
     }
+    public void setCharacteristics(Set<Characteristic> characteristics) {
+        this.characteristics.clear();
+        addAllCharacteristics(characteristics);
+    }
     public void addAllCharacteristics(Set<Characteristic> characteristics) throws IllegalArgumentException {
         for (Characteristic characteristic : Validate.isNotEmpty(characteristics, "Characteristics")){
             boolean result = this.characteristics.add(Validate.isNotNull(characteristic, "Characteristic"));
