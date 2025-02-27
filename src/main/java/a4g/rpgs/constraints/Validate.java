@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Set;
 
 public final class Validate {
+
+    private Validate() {}
+
     /* Object validation */
     public static <T> T isNotNull(T object, String argumentName) throws IllegalArgumentException {
         if (object == null)

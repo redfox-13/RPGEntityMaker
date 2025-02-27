@@ -51,10 +51,10 @@ public class InventoryTest {
     }
 
     @Test
-    void testIsCumbered() {
+    void testIsEncumbered() {
         Inventory.Item heavyItem = new Inventory.Item("Boulder", 120, 1);
         inventory.addItem(heavyItem);
-        Assertions.assertTrue(inventory.isCumbered());
+        Assertions.assertTrue(inventory.isEncumbered());
     }
 
     @Test
