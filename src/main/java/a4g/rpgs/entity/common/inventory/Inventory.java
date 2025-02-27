@@ -57,7 +57,7 @@ public class Inventory {
             capacityUsed -= item.getTotalWeight();
     }
 
-    public boolean isCumbered() {
+    public boolean isEncumbered() {
         return capacityUsed > capacitySupported;
     }
 
